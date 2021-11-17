@@ -110,6 +110,30 @@ class PostController{
 		
 		if(!empty($response)){	
 
+			$ubigeo = 'Not registered yet';
+			$country_obj = GetModel::getFilterData('countries', 'id', $response[0]->id_country, null, null, null, null, 'name');
+
+			if (!empty($response[0]->id_country)) 
+				$ubigeo = $country_obj[0]->name;
+
+			if (!empty($response[0]->id_district)) 
+			{
+				$district_obj = GetModel::getFilterData('districts', 'id', $response[0]->id_district, null, null, null, null, '*');
+				$province_obj = GetModel::getFilterData('provinces', 'id_province', $district_obj[0]->id_province_district, null, null, null, null, 'name');
+				$department_obj = GetModel::getFilterData('departments', 'id_department', $district_obj[0]->id_department_district, null, null, null, null, 'name');
+
+				$ubigeo .= ' / '.$department_obj[0]->name;
+				$ubigeo .= ' / '.$province_obj[0]->name;
+				$ubigeo .= ' / '.$district_obj[0]->name;
+			}
+
+			$phones = 'Not registered yet';
+			if (!empty($response[0]->phone1)) 
+				$phones = array($response[0]->phone1, $response[0]->phone2, $response[0]->phone3);
+
+			$response[0]->ubigeo = $ubigeo;
+			$response[0]->phones = $phones;
+
 			/*=============================================
 			Encriptamos la contraseña
 			=============================================*/

@@ -27,8 +27,8 @@ class RoutesController{
 
 	static public function tablePrivate(){
 
-		$tables = ["users","disputes","orders","sales","messages"];
-
+		//$tables = ["users","disputes","orders","sales","messages"];
+		$tables = ["users","disputes","messages"];
 		return $tables;
 
 	}
